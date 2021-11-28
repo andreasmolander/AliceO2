@@ -221,7 +221,7 @@ void Geometry::initializeFiberMedium()
     mediumName = Form("FV0_FiberRing%i$", i + 1);
     medium = gGeoManager->GetMedium(mediumName);
     if (!medium) {
-      LOG(WARNING) << Form("FV0 geometry: Fiber medium for ring no. %i (%s) not found!", i + 1, mediumName);
+      LOG(warning) << Form("FV0 geometry: Fiber medium for ring no. %i (%s) not found!", i + 1, mediumName);
     }
     mMediumFiberRings.push_back(medium);
   }
@@ -231,7 +231,7 @@ void Geometry::initializeFiberMedium()
     mediumName = Form("FV0_FiberPMT%i$", i + 1);
     medium = gGeoManager->GetMedium(mediumName);
     if (!medium) {
-      LOG(WARNING) << Form("FV0 geometry: PMT fiber medium from cell no. %i (%s) not found!", i + 1, mediumName);
+      LOG(warning) << Form("FV0 geometry: PMT fiber medium from cell no. %i (%s) not found!", i + 1, mediumName);
     }
     mMediumFiberPMTs.push_back(medium);
   }
@@ -1090,7 +1090,7 @@ void Geometry::assemblePmts(TGeoVolume* vFV0Right, TGeoVolume* vFV0Left) const
   TGeoVolumeAssembly* pmts = new TGeoVolumeAssembly(createVolumeName("PMTS").c_str());
   TGeoVolume* pmt = gGeoManager->GetVolume(createVolumeName(sPmtName).c_str());
   if (!pmt) {
-    LOG(WARNING) << "FV0 Geometry::assemblePmts(): PMT volume not found.";
+    LOG(warning) << "FV0 Geometry::assemblePmts(): PMT volume not found.";
   } else {
     for (int i = 0; i < sNumberOfPMTs; i++) {
       pmts->AddNode(pmt, i, new TGeoTranslation(sXPmt[i], sYPmt[i], sZPmt));
@@ -1128,7 +1128,7 @@ void Geometry::assembleFibers(TGeoVolume* vFV0Right, TGeoVolume* vFV0Left) const
     fiber = gGeoManager->GetVolume(volumeName);
 
     if (!fiber) {
-      LOG(WARNING) << Form("FV0 geometry: Volume of fibers from cell %i (%s) not found!", iPMTFiberCell, volumeName);
+      LOG(warning) << Form("FV0 geometry: Volume of fibers from cell %i (%s) not found!", iPMTFiberCell, volumeName);
     } else {
       fibersRight->AddNode(fiber, i, new TGeoTranslation(sXPmt[i], sYPmt[i], sZPmt + sDzPmt));
     }
@@ -1138,7 +1138,7 @@ void Geometry::assembleFibers(TGeoVolume* vFV0Right, TGeoVolume* vFV0Left) const
     fiber = gGeoManager->GetVolume(volumeName);
 
     if (!fiber) {
-      LOG(WARNING) << Form("FV0 geometry: Volume of fibers from cell %i (%s) not found!", iPMTFiberCell, volumeName);
+      LOG(warning) << Form("FV0 geometry: Volume of fibers from cell %i (%s) not found!", iPMTFiberCell, volumeName);
     } else {
       fibersLeft->AddNode(fiber, i, new TGeoTranslation(sXPmt[i], sYPmt[i], sZPmt + sDzPmt));
     }
@@ -1146,7 +1146,7 @@ void Geometry::assembleFibers(TGeoVolume* vFV0Right, TGeoVolume* vFV0Left) const
     iPMTFiberCell++;
   }
 
-  LOG(DEBUG) << Form("FV0 geometry: total weight of fibers = %.4f kg", fibersRight->Weight(1e-5) + fibersLeft->Weight(1e-5));
+  LOG(debug) << Form("FV0 geometry: total weight of fibers = %.4f kg", fibersRight->Weight(1e-5) + fibersLeft->Weight(1e-5));
 
   vFV0Right->AddNode(fibersRight, 0);
   vFV0Left->AddNode(fibersLeft, 1);
