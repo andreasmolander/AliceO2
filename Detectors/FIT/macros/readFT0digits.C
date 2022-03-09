@@ -1,4 +1,5 @@
 #if !defined(__CLING__) || defined(__ROOTCLING__)
+#include "DataFormatsFIT/Triggers.h"
 #include "DataFormatsFT0/Digit.h"
 #include "DataFormatsFT0/ChannelData.h"
 #include "DataFormatsFT0/HitType.h"

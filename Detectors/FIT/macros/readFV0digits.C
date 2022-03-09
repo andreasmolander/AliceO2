@@ -20,6 +20,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include "DataFormatsFIT/Triggers.h"
 #include "DataFormatsFV0/Digit.h"
 #include "DataFormatsFV0/ChannelData.h"
 #include "SimulationDataFormat/MCTruthContainer.h"

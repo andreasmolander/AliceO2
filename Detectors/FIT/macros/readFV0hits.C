@@ -54,6 +54,7 @@ void InitHistoNames(std::vector<std::string>& vhName, std::vector<int>& vPdg)
   vhName.push_back("hElossDet");
   vhName.push_back("hEtotVsR");
   vhName.push_back("hEtotVsEloss");
+  vhName.push_back("hZ");
 
   for (UInt_t ipdg = 0; ipdg < vPdg.size(); ipdg++) {
     std::stringstream ss;
@@ -85,6 +86,7 @@ void readFV0Hits(std::string simPrefix = "o2sim", UInt_t rebin = 1)
   TH2F* hElossDet = new TH2F(vHistoNames.at(8).c_str(), "", nEl, 0, el1, nCells, 0, nCells);
   TH2F* hEtotVsR = new TH2F(vHistoNames.at(9).c_str(), "", 30000, 0, 300, 80, 0, 80);
   TH2F* hEtotVsEloss = new TH2F(vHistoNames.at(10).c_str(), "", 30000, 0, 300, nEl, 0, el1);
+  TH1F* hZ = new TH1F(vHistoNames.at(11).c_str(), "", 200, 315, 325);
 
   // Setup histo properties
   hElossDet->SetXTitle("Energy loss [MeV]");
@@ -96,6 +98,8 @@ void readFV0Hits(std::string simPrefix = "o2sim", UInt_t rebin = 1)
   hEtotVsEloss->SetXTitle("Total energy at entrance [MeV]");
   hEtotVsEloss->SetYTitle("Energy loss [MeV]");
   hEtotVsEloss->SetZTitle("Counts");
+  hZ->SetXTitle("Hit Z-coordinate [cm]");
+  hZ->SetYTitle("Counts");
   for (UInt_t ih = 0; ih < vhElossVsDistance.size(); ih++) {
     TH2F* h = vhElossVsDistance.at(ih);
     std::stringstream ss;
@@ -124,6 +128,7 @@ void readFV0Hits(std::string simPrefix = "o2sim", UInt_t rebin = 1)
   vh.push_back(hEtotVsEloss);
   vh.insert(vh.end(), vhElossVsDistance.begin(), vhElossVsDistance.end());
   vh.insert(vh.end(), vhElossVsEtot.begin(), vhElossVsEtot.end());
+  vh.push_back(hZ);
   for (UInt_t ih = 0; ih < vh.size(); ih++) {
     vh[ih]->SetDirectory(0);
     vh[ih]->GetXaxis()->SetTitleSize(fontsize);
@@ -177,6 +182,7 @@ void readFV0Hits(std::string simPrefix = "o2sim", UInt_t rebin = 1)
         vhElossVsDistance.at(vhElossVsDistance.size() - 1)->Fill(hit->GetEnergyLoss() * 1e3, distance);
         vhElossVsEtot.at(vhElossVsEtot.size() - 1)->Fill(hit->GetEnergyLoss() * 1e3, hit->GetTotalEnergyAtEntrance() * 1e3);
       }
+      hZ->Fill(hit->GetZ());
     }
   }
 
