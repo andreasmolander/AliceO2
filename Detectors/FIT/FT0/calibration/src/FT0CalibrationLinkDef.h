@@ -22,4 +22,7 @@
 #pragma link C++ class o2::ft0::FT0CalibCollector + ;
 #pragma link C++ class o2::calibration::TimeSlotCalibration < o2::ft0::FT0CalibrationInfoObject, o2::ft0::FT0CalibInfoSlot>;
 
+#pragma link C++ struct o2::ft0::FT0DCSinfo + ;
+#pragma link C++ class std::unordered_map < o2::dcs::DataPointIdentifier, o2::ft0::FT0DCSinfo> + ;
+
 #endif
