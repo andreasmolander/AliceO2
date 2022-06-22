@@ -83,7 +83,7 @@ class FT0DCSDataProcessor : public o2::framework::Task
                                             "FT0/HV/FT0_C/MCP_A[2..5]/actual/iMon",
                                             "FT0/HV/FT0_C/MCP_B[1..6]/actual/iMon",
                                             "FT0/HV/FT0_C/MCP_C[1..2]/actual/iMon",
-                                            "FT0/HV/FT0_C/MCP_C[5..6]/actual/iMon", 
+                                            "FT0/HV/FT0_C/MCP_C[5..6]/actual/iMon",
                                             "FT0/HV/FT0_C/MCP_D[1..2]/actual/iMon",
                                             "FT0/HV/FT0_C/MCP_D[5..6]/actual/iMon",
                                             "FT0/HV/FT0_C/MCP_E[1..6]/actual/iMon",
@@ -111,7 +111,7 @@ class FT0DCSDataProcessor : public o2::framework::Task
     }
 
     mProcessor = std::make_unique<o2::ft0::FT0DCSProcessor>();
-    
+
     if (useVerboseMode) {
       mProcessor->useVerboseMode();
     }

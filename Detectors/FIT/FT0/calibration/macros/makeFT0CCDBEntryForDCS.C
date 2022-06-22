@@ -35,7 +35,7 @@ int makeFT0CCDBEntryForDCS(const std::string url = "http://localhost:8080")
                                         "FT0/HV/FT0_C/MCP_A[2..5]/actual/iMon",
                                         "FT0/HV/FT0_C/MCP_B[1..6]/actual/iMon",
                                         "FT0/HV/FT0_C/MCP_C[1..2]/actual/iMon",
-                                        "FT0/HV/FT0_C/MCP_C[5..6]/actual/iMon", 
+                                        "FT0/HV/FT0_C/MCP_C[5..6]/actual/iMon",
                                         "FT0/HV/FT0_C/MCP_D[1..2]/actual/iMon",
                                         "FT0/HV/FT0_C/MCP_D[5..6]/actual/iMon",
                                         "FT0/HV/FT0_C/MCP_E[1..6]/actual/iMon",
