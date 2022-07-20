@@ -33,7 +33,7 @@ namespace ft0
 
 class FT0DCSConfigProcessor : public o2::fit::FITDCSConfigProcessor
 {
- // Example of how to use another DCS config reader (subclass of o2::fit::FITDCSConfigReader)
+  // Example of how to use another DCS config reader (subclass of o2::fit::FITDCSConfigReader)
  public:
   FT0DCSConfigProcessor(const std::string& detectorName, const o2::header::DataDescription& dataDescriptionBChM)
     : o2::fit::FITDCSConfigProcessor(detectorName, dataDescriptionBChM) {}
