@@ -130,8 +130,8 @@ void readFITDCSdata(std::string detectorName = "FT0",
   std::unordered_map<o2::dcs::DataPointIdentifier, o2::fit::DCSDPValues>* ccdbMapPrev = nullptr; // Pointer to the previously queried CCDB object
   // Pointer to the last CCDB object for the queried time period
   std::unordered_map<o2::dcs::DataPointIdentifier, o2::fit::DCSDPValues>* ccdbMapLatest = ccdbApi.retrieveFromTFileAny<std::unordered_map<o2::dcs::DataPointIdentifier, o2::fit::DCSDPValues>>(ccdbPath, metadata, timeEnd, &headersLatest);
-  o2::dcs::DataPointIdentifier dpIdTmp;                                                          // DataPointIdentifier object used as CCDB map key
-  o2::fit::DCSDPValues* ccdbDPValuesPointer = nullptr;                                           // Pointer to the CCDB map values
+  o2::dcs::DataPointIdentifier dpIdTmp;                // DataPointIdentifier object used as CCDB map key
+  o2::fit::DCSDPValues* ccdbDPValuesPointer = nullptr; // Pointer to the CCDB map values
 
   while (queryTimeStamp <= timeEnd) {
     ccdbMap = ccdbApi.retrieveFromTFileAny<std::unordered_map<o2::dcs::DataPointIdentifier, o2::fit::DCSDPValues>>(ccdbPath, metadata, queryTimeStamp, &headers);
@@ -167,10 +167,8 @@ void readFITDCSdata(std::string detectorName = "FT0",
     }
 
     // The CCDB object should always contain values for all datapoints. This is just to check that.
-    if ((detectorName == "FT0" && ccdbMap->size() != 477)
-        || (detectorName == "FV0" && ccdbMap->size() != 147)
-        || (detectorName == "FDD" && ccdbMap->size() != 76)) {
-      LOGP(error, 
+    if ((detectorName == "FT0" && ccdbMap->size() != 477) || (detectorName == "FV0" && ccdbMap->size() != 147) || (detectorName == "FDD" && ccdbMap->size() != 76)) {
+      LOGP(error,
            "Wrong number of DCS datapoints fetched for {}, got {}. There is a bug, please send output of this script, with input parameters, to andreas.molander@cern.ch.",
            detectorName, ccdbMap->size());
     }
@@ -279,7 +277,7 @@ void readFITDCSdata(std::string detectorName = "FT0",
     if (!textOutput.empty()) {
       LOG(info) << "Storing data point values to text file is not implemented yet.";
     }
-  }  
+  }
 }
 
 void plotFITDCSdataFromFile(const std::string& fileName)
@@ -289,7 +287,7 @@ void plotFITDCSdataFromFile(const std::string& fileName)
     LOGP(fatal, "Error opening file '{}'", fileName);
     return;
   }
-  
+
   std::unique_ptr<TMultiGraph> multiGraph(file->Get<TMultiGraph>("mgDCSDPTrends"));
   if (!multiGraph) {
     LOGP(fatal, "Cannot find TMultiGraph 'mgDCSDPTrends' in {}", fileName);
@@ -327,7 +325,7 @@ std::vector<std::string> getAliases(const std::string& input, const o2::ccdb::Cc
 
   if (file.is_open()) {
     LOGP(info, "Parsing input file '{}'", input);
-    while(std::getline(file, alias)) {
+    while (std::getline(file, alias)) {
       if (!alias.empty()) {
         aliases.push_back(alias);
       }
@@ -335,7 +333,7 @@ std::vector<std::string> getAliases(const std::string& input, const o2::ccdb::Cc
   } else if (!input.empty()) {
     LOGP(info, "Parsing input string '{}'", input);
     std::stringstream ss(input);
-    while(std::getline(ss, alias, ';')) {
+    while (std::getline(ss, alias, ';')) {
       aliases.push_back(alias);
     }
   } else {
