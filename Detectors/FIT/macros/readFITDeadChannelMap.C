@@ -32,9 +32,9 @@
 #include <boost/algorithm/string.hpp>
 
 void readFITDeadChannelMap(std::string detectorName = "FT0",
-                          long timestamp = -1,
-                          const std::string& ccdbUrl = "https://alice-ccdb.cern.ch",
-                          const bool verbose = false)
+                           long timestamp = -1,
+                           const std::string& ccdbUrl = "https://alice-ccdb.cern.ch",
+                           const bool verbose = false)
 {
   // Parse and check detector name
   boost::to_upper(detectorName);

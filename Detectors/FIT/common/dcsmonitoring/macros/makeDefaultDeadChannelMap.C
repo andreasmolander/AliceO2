@@ -31,8 +31,8 @@
 #include <boost/algorithm/string.hpp>
 
 void makeDefaultDeadChannelMap(std::string detectorName,
-                              const std::string ccdbUrl = "http://localhost:8080",
-                              const std::string fileName = "")
+                               const std::string ccdbUrl = "http://localhost:8080",
+                               const std::string fileName = "")
 {
   boost::to_upper(detectorName);
 
