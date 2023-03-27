@@ -47,6 +47,7 @@ void FITDCSConfigReader::updateDChMCcdbObjectInfo()
 {
   std::map<std::string, std::string> metadata;
   o2::calibration::Utils::prepareCCDBobjectInfo(mDChM, mCcdbObjectInfoDChM, mCcdbPathDChM, metadata, getStartValidityDChM(), getEndValidityDChM());
+  mCcdbObjectInfoDChM.setValidateUpload(getValidateUploadMode());
 }
 
 const o2::fit::DeadChannelMap& FITDCSConfigReader::getDChM() const { return mDChM; }
@@ -66,3 +67,6 @@ void FITDCSConfigReader::setFileNameDChM(const std::string& fileName) { mFileNam
 
 const bool FITDCSConfigReader::getVerboseMode() const { return mVerbose; }
 void FITDCSConfigReader::setVerboseMode(const bool verboseMode) { mVerbose = verboseMode; }
+
+const bool FITDCSConfigReader::getValidateUploadMode() const { return mValidateUpload; }
+void FITDCSConfigReader::setValidateUploadMode(const bool validateUpload) { mValidateUpload = validateUpload; };

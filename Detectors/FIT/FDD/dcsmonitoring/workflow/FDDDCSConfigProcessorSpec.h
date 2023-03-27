@@ -45,7 +45,8 @@ DataProcessorSpec getFDDDCSConfigProcessorSpec()
     outputs,
     AlgorithmSpec{adaptFromTask<o2::fit::FITDCSConfigProcessor>("FDD", ddDChM)},
     Options{{"use-verbose-mode", VariantType::Bool, false, {"Use verbose mode"}},
-            {"filename-dchm", VariantType::String, "FDD-deadchannels.txt", {"Dead channel map file name"}}}};
+            {"filename-dchm", VariantType::String, "FDD-deadchannels.txt", {"Dead channel map file name"}},
+            {"no-validate", VariantType::Bool, false, {"Don't validate the CCDB uploads"}}}};
 }
 
 } // namespace framework

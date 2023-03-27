@@ -55,9 +55,13 @@ class FITDCSConfigReader
   const bool getVerboseMode() const;
   void setVerboseMode(const bool verboseMode);
 
+  const bool getValidateUploadMode() const;
+  void setValidateUploadMode(const bool validateUpload);
+
  protected:
   o2::fit::DeadChannelMap mDChM; ///< The dead channel map CCDB object
   bool mVerbose = false;         ///< Verbose mode
+  bool mValidateUpload = true;   ///< Validate upload mode
 
  private:
   std::string mFileNameDChM;                                              ///< The expected file name of the dead channel map
