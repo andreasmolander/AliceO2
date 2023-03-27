@@ -53,7 +53,7 @@ class FITDCSConfigProcessor : public o2::framework::Task
     mDCSConfigReader->setVerboseMode(mVerbose);
     mValidateUpload = !ic.options().get<bool>("no-validate");
     mDCSConfigReader->setValidateUploadMode(mValidateUpload);
-    
+
     LOG(info) << "Verbose mode: " << mVerbose;
     LOG(info) << "Validate upload: " << mValidateUpload;
     LOG(info) << "Expected dead channel map file name: " << mDCSConfigReader->getFileNameDChM();
