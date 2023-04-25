@@ -53,4 +53,6 @@
 #pragma link C++ class o2::ft0::GlobalOffsetsCalibrationObject + ;
 #pragma link C++ class o2::ft0::RecoCalibInfoObject + ;
 #pragma link C++ class o2::ft0::GlobalOffsetsInfoObject + ;
+
+#pragma link C++ struct o2::ft0::ChannelsConfig + ;
 #endif

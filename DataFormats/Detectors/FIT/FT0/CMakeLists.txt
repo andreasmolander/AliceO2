@@ -11,6 +11,7 @@
 
 o2_add_library(DataFormatsFT0
   SOURCES src/ChannelData.cxx
+          src/ChannelsConfig.cxx
           src/Digit.cxx
           src/DigitFilterParam.cxx
           src/CalibParam.cxx
@@ -28,6 +29,7 @@ o2_add_library(DataFormatsFT0
 
 o2_target_root_dictionary(DataFormatsFT0
   HEADERS include/DataFormatsFT0/ChannelData.h
+          include/DataFormatsFT0/ChannelsConfig.h
           include/DataFormatsFT0/Digit.h
           include/DataFormatsFT0/DigitFilterParam.h
           include/DataFormatsFT0/CalibParam.h
