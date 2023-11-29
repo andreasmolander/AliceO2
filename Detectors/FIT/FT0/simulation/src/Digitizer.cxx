@@ -208,7 +208,7 @@ void Digitizer::process(const std::vector<o2::ft0::HitType>* hits,
     const auto& params = FT0DigParam::Instance();
     Int_t hit_ch = hit.GetDetectorID();
     Bool_t is_A_side = (hit_ch < 4 * mGeometry.NCellsA);
-  
+
     // Subtract time-of-flight from hit time
     const Float_t timeOfFlight = hit.GetPos().R() / o2::constants::physics::LightSpeedCm2NS;
     const Float_t timeOffset = is_A_side ? params.hitTimeOffsetA : params.hitTimeOffsetC;

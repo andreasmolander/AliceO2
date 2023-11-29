@@ -22,7 +22,7 @@ namespace o2::fv0
 {
 // parameters of FV0 digitization / transport simulation
 struct FV0DigParam : o2::conf::ConfigurableParamHelper<FV0DigParam> {
-  float hitTimeOffset = 0.0;                                               ///< Hit time offset [ns]
+  float hitTimeOffset = 0.0; ///< Hit time offset [ns]
 
   float photoCathodeEfficiency = 0.23;                                     // quantum efficiency = nOfPhotoE_emitted_by_photocathode / nIncidentPhotons
   float lightYield = 0.01;                                                 // light collection efficiency to be tuned using collision data [1%]
