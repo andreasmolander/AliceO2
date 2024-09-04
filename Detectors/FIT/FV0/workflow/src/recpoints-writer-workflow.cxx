@@ -39,7 +39,7 @@ WorkflowSpec defineDataProcessing(const ConfigContext& ctx)
 {
   o2::conf::ConfigurableParam::updateFromString(ctx.options().get<std::string>("configKeyValues"));
   bool disableMC = ctx.options().get<bool>("disable-mc");
-  
+
   WorkflowSpec specs;
   DataProcessorSpec producer = o2::fv0::getRecPointWriterSpec(!disableMC);
   specs.push_back(producer);

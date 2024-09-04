@@ -31,10 +31,10 @@
 void compareRecPoints(std::string filename1, std::string filename2)
 {
   std::unique_ptr<TFile> file1(TFile::Open(filename1.c_str(), "READ"));
-  TTree *tree1 = (TTree*)file1->Get("o2sim");
+  TTree* tree1 = (TTree*)file1->Get("o2sim");
 
   std::unique_ptr<TFile> file2(TFile::Open(filename2.c_str(), "READ"));
-  TTree *tree2 = (TTree*)file2->Get("o2sim");
+  TTree* tree2 = (TTree*)file2->Get("o2sim");
 
   if (tree1->GetEntries() != tree2->GetEntries()) {
     std::cout << "Non equal number of entries in trees!" << std::endl;
@@ -45,19 +45,19 @@ void compareRecPoints(std::string filename1, std::string filename2)
   typedef typename o2::ft0::ChannelDataFloat ChannelDataFloat;
 
   std::vector<RecPoint> vecRecPoints1;
-  std::vector<RecPoint> *ptrVecRecPoints1 = &vecRecPoints1;
+  std::vector<RecPoint>* ptrVecRecPoints1 = &vecRecPoints1;
 
   std::vector<ChannelDataFloat> vecChannelDataFloat1;
-  std::vector<ChannelDataFloat> *ptrVecChannelDataFloat1 = &vecChannelDataFloat1;
+  std::vector<ChannelDataFloat>* ptrVecChannelDataFloat1 = &vecChannelDataFloat1;
 
   tree1->SetBranchAddress("FT0Cluster", &ptrVecRecPoints1);
   tree1->SetBranchAddress("FT0RecChData", &ptrVecChannelDataFloat1);
 
   std::vector<RecPoint> vecRecPoints2;
-  std::vector<RecPoint> *ptrVecRecPoints2 = &vecRecPoints2;
+  std::vector<RecPoint>* ptrVecRecPoints2 = &vecRecPoints2;
 
   std::vector<ChannelDataFloat> vecChannelDataFloat2;
-  std::vector<ChannelDataFloat> *ptrVecChannelDataFloat2 = &vecChannelDataFloat2;
+  std::vector<ChannelDataFloat>* ptrVecChannelDataFloat2 = &vecChannelDataFloat2;
 
   tree2->SetBranchAddress("FT0Cluster", &ptrVecRecPoints2);
   tree2->SetBranchAddress("FT0RecChData", &ptrVecChannelDataFloat2);
@@ -71,8 +71,8 @@ void compareRecPoints(std::string filename1, std::string filename2)
 
       if (vecRecPoints1.size() == vecRecPoints2.size()) {
         for (int iEvent = 0; iEvent < vecRecPoints1.size(); iEvent++) {
-          const auto &recPoint1 = vecRecPoints1[iEvent];
-          const auto &recPoint2 = vecRecPoints2[iEvent];
+          const auto& recPoint1 = vecRecPoints1[iEvent];
+          const auto& recPoint2 = vecRecPoints2[iEvent];
 
           if (!(recPoint1 == recPoint2)) {
             std::cout << "First RecPoint" << std::endl;
@@ -90,8 +90,8 @@ void compareRecPoints(std::string filename1, std::string filename2)
 
       if (vecChannelDataFloat1.size() == vecChannelDataFloat2.size()) {
         for (int iEvent = 0; iEvent < vecChannelDataFloat1.size(); iEvent++) {
-          const auto &channelDataFloat1 = vecChannelDataFloat1[iEvent];
-          const auto &channelDataFloat2 = vecChannelDataFloat2[iEvent];
+          const auto& channelDataFloat1 = vecChannelDataFloat1[iEvent];
+          const auto& channelDataFloat2 = vecChannelDataFloat2[iEvent];
 
           if (!(channelDataFloat1 == channelDataFloat2)) {
             std::cout << "First ChannelDataFloat" << std::endl;
