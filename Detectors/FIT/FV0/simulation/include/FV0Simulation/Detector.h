@@ -84,6 +84,7 @@ class Detector : public o2::base::DetImpl<Detector>
     Zero,
     Air,
     Scintillator,
+    PhotonFilter,
     Plastic,
     FiberRing1,
     FiberRing2,

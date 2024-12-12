@@ -175,6 +175,13 @@ void Detector::createMaterials()
   Float_t wScint[nScint] = {0.07085, 0.92915}; // based on EJ-204 datasheet: n_atoms/cm3
   const Float_t dScint = 1.023;
 
+  // Teflon (PTFE) - C2F4, for the photon filter, i.e. the tape/paint between scintillators
+  const Int_t nTeflon = 2;
+  Float_t aTeflon[nTeflon] = {12.0107, 19.0};
+  Float_t zTeflon[nTeflon] = {6, 9};
+  Float_t wTeflon[nTeflon] = {0.33333, 0.66667};
+  const Float_t dTeflon = 2.2;
+
   // PMMA plastic mixture: (C5O2H8)n, same for plastic fiber support and for the fiber core
   //   Fiber cladding is different, but it comprises only 3% of the fiber volume, so it is not included
   const Int_t nPlast = 3;
@@ -234,6 +241,10 @@ void Detector::createMaterials()
 
   o2::base::Detector::Mixture(++matId, "Scintillator$", aScint, zScint, dScint, nScint, wScint);
   o2::base::Detector::Medium(Scintillator, "Scintillator$", matId, unsens, fieldType, maxField,
+                             tmaxfd, stemax, deemax, epsil, stmin);
+
+  o2::base::Detector::Mixture(++matId, "PhotonFilter$", aTeflon, aTeflon, dTeflon, nTeflon, wTeflon);
+  o2::base::Detector::Medium(PhotonFilter, "PhotonFilter$", matId, unsens, fieldType, maxField,
                              tmaxfd, stemax, deemax, epsil, stmin);
 
   o2::base::Detector::Mixture(++matId, "Plastic$", aPlast, zPlast, dPlast, nPlast, wPlast);

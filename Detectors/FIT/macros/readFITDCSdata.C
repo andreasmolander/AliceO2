@@ -9,10 +9,10 @@
 // granted to it by virtue of its status as an Intergovernmental Organization
 // or submit itself to any jurisdiction.
 
-/// \file readFITDCSdata.C
-/// \brief ROOT macro for reading the FIT DCS data from CCDB
+/// \file  readFITDCSdata.C
+/// \brief ROOT macro for reading the FIT DCS datapoint data from CCDB
 ///
-/// \author Andreas Molander <andreas.molander@cern.ch>, University of Jyvaskyla, Finland
+/// \author Andreas Molander <andreas.molander@cern.ch>
 
 #if !defined(__CLING__) || defined(__ROOTCLING__)
 
@@ -47,11 +47,12 @@
 
 // Helper functions
 
+///
 const std::string epochToReadable(const long timestamp);
 std::vector<std::string> getAliases(const std::string& input, const o2::ccdb::CcdbApi& ccdbApi, const std::string& detectorName, const long timestamp);
 void plotFITDCSmultigraph(const TMultiGraph& multiGraph);
 
-/// ROOT macro for reading FIT DCS data from CCDB.
+/// ROOT macro for reading FIT DCS datapoint data from CCDB.
 ///
 /// The macro can:
 /// - Plot the trends (default ON)
@@ -181,7 +182,7 @@ void readFITDCSdata(std::string detectorName = "FT0",
     }
 
     // The CCDB object should always contain values for all datapoints. This is just to check that.
-    if (verbose && ((detectorName == "FT0" && ccdbMap->size() != 501) || (detectorName == "FV0" && ccdbMap->size() != 147) || (detectorName == "FDD" && ccdbMap->size() != 76))) {
+    if (verbose && ((detectorName == "FT0" && ccdbMap->size() != 500) || (detectorName == "FV0" && ccdbMap->size() != 147) || (detectorName == "FDD" && ccdbMap->size() != 99))) {
       LOGP(error,
            "Wrong number of DCS datapoints fetched for {}, got {}. There is a bug, please send output of this script, with input parameters, to andreas.molander@cern.ch.",
            detectorName, ccdbMap->size());
@@ -353,8 +354,12 @@ void printCCDBObject(const std::string detectorName = "FT0",
     }
     std::stringstream tmp;
     tmp << it.first;
-    LOGP(info, "DPID = {}", tmp.str());
-    it.second.print();
+    // LOGP(info, "DPID = {}", tmp.str());
+    // LOGP(info, "{}", tmp.str());
+    // it.second.print();
+    if (!it.second.empty()) {
+      LOGP(info, "{}    {}", tmp.str(), epochToReadable(it.second.values.back().first));
+    }
   }
 
   LOGP(info, "Size of map = {}", map->size());
@@ -374,6 +379,9 @@ void plotFITDCSmultigraph(const TMultiGraph& multiGraph)
   canvas->BuildLegend();
 }
 
+/// Convert UNIX timestamp (in ms) to a human readable string.
+/// \param timestamp UNIX timestamp in ms.
+/// \return Human readable string.
 const std::string epochToReadable(const long timestamp)
 {
   std::string readableTime;
@@ -383,6 +391,10 @@ const std::string epochToReadable(const long timestamp)
   return readableTime;
 }
 
+/// Parse the input string and return a vector of aliases.
+/// If the input string is a file name, the aliases are assumed to be stored in the file, one on each line.
+/// If the input string is not a file name, it is assumed to be a semicolon separated list of aliases.
+/// If the input string is empty, all data points defined in [ccdbUrl]/[detectorName]/Config/DCSDPconfig are queried.
 std::vector<std::string> getAliases(const std::string& input, const o2::ccdb::CcdbApi& ccdbApi, const std::string& detectorName, const long timestamp)
 {
   std::vector<std::string> aliases;
