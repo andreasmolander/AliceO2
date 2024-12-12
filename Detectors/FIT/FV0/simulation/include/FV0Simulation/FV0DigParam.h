@@ -57,6 +57,11 @@ struct FV0DigParam : o2::conf::ConfigurableParamHelper<FV0DigParam> {
   bool isIntegrateFull = false;                                                  // Full charge integration widow in 25 ns
   float cfdCheckWindow = 2.5;                                                    // time window for the cfd in ns to trigger the charge integration
   int avgNumberPhElectronPerMip = 201;                                           // avg number of photo-electrons per MIP
+<<<<<<< Updated upstream
+=======
+  // float globalTimeOfFlight = 315.0 / o2::constants::physics::LightSpeedCm2NS;    // TODO [check the correct value for distance of FV0 to IP]
+  float hitTimeOffset = 0.0;                                                     ///< Hit time offset [ns]
+>>>>>>> Stashed changes
   float mCfdDeadTime = 15.6;                                                     // [ns]
   float mCFD_trsh = 3.;                                                          // [mV]
   float getCFDTrshInAdc() const { return mCFD_trsh * getChannelsPerMilivolt(); } // [ADC channels]

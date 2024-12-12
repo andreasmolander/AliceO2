@@ -216,12 +216,20 @@ void Digitizer::process(const std::vector<o2::ft0::HitType>* hits,
     const auto& params = FT0DigParam::Instance();
 
     Bool_t is_A_side = (hit_ch < 4 * mGeometry.NCellsA);
+<<<<<<< Updated upstream
 
     // Subtract time-of-flight from hit time
     const Float_t timeOfFlight = hit.GetPos().R() / o2::constants::physics::LightSpeedCm2NS;
     const Float_t timeOffset = is_A_side ? params.hitTimeOffsetA : params.hitTimeOffsetC;
     Double_t hit_time = hit.GetTime() - timeOfFlight + timeOffset;
 
+=======
+    // Time-of-flight subtracted from hit time
+    const Float_t timeOfFlight = hit.GetPos().R() / o2::constants::physics::LightSpeedCm2NS;
+    const Float_t timeOffset = is_A_side ? params.hitTimeOffsetA : params.hitTimeOffsetC;
+    // Float_t time_compensate = is_A_side ? params.mA_side_cable_cmps : params.mC_side_cable_cmps;
+    Double_t hit_time = hit.GetTime() - timeOfFlight + timeOffset;
+>>>>>>> Stashed changes
     if (hit_time > 150) {
       continue; // not collect very slow particles
     }

@@ -96,7 +96,11 @@ class Digitizer
   /// \param hitTime     Time of the hit
   /// \param hitR        Length to IP from the position of the hit
   /// \param cachedIR    Cached interaction records
+<<<<<<< Updated upstream
   /// \param nCachedIR   Number of cached interaction records
+=======
+  /// \param nCachedIR   Mumber of cached interaction records
+>>>>>>> Stashed changes
   /// \param detID       Detector cell ID
   void createPulse(float mipFraction, int parID, const double hitTime, const float hitR,
                    std::array<o2::InteractionRecord, NBC2Cache> const& cachedIR, int nCachedIR, const int detID);
