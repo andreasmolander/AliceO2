@@ -29,6 +29,11 @@ struct FT0DigParam : o2::conf::ConfigurableParamHelper<FT0DigParam> {
   float mAmp_trsh = 100;             // [ph.e]
   float mAmpRecordLow = -4;          // integrate charge from
   float mAmpRecordUp = 15;           // to [ns]
+<<<<<<< Updated upstream
+=======
+  // float mC_side_cable_cmps = 2.86;   // ns
+  // float mA_side_cable_cmps = 11.110; // ns
+>>>>>>> Stashed changes
   float hitTimeOffsetA = 0;          ///< hit time offset on the A side [ns]
   float hitTimeOffsetC = 0;          ///< hit time offset on the C side [ns]
   int mtrg_central_trh = 600.;       // channels

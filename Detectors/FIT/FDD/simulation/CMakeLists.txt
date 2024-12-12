@@ -12,8 +12,12 @@
 o2_add_library(FDDSimulation
         SOURCES src/Detector.cxx
                 src/Digitizer.cxx
+<<<<<<< Updated upstream
         PUBLIC_LINK_LIBRARIES O2::CommonUtils
                               O2::SimulationDataFormat
+=======
+        PUBLIC_LINK_LIBRARIES O2::SimulationDataFormat
+>>>>>>> Stashed changes
                               O2::FDDBase
                               O2::DataFormatsFDD
                               O2::DetectorsRaw

@@ -40,4 +40,14 @@ o2_add_test_root_macro(readFITDCSdata.C
                                              O2::CCDB
                        LABELS fit)
 
+o2_add_test_root_macro(AnalyzeFITDigits.C
+                       PUBLIC_LINK_LIBRARIES O2::DataFormatsFIT
+                                             O2::DataFormatsFT0
+                                             O2::DataFormatsFV0
+                                             O2::DataFormatsFDD
+                       LABELS fit)
+
+o2_add_test_root_macro(AnalyzeFITRecPoints.C
+                       LABELS fit)
+
 o2_data_file(COPY readFITDCSdata.C DESTINATION Detectors/FIT/macros/readFITDCSdata.C)

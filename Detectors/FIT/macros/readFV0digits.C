@@ -1,32 +1,33 @@
-#if !defined(__CLING__) || defined(__ROOTCLING__)
+// #if !defined(__CLING__) || defined(__ROOTCLING__)
 
-#include <TFile.h>
-#include <TTree.h>
-#include <TH1F.h>
-#include <TH1D.h>
-#include <TH2F.h>
-#include <TCanvas.h>
-#include <TPad.h>
-#include <TAxis.h>
-#include <TStyle.h>
-#include <TPaveStats.h>
-#include <TLatex.h>
-#include <TColor.h>
+// #include <TFile.h>
+// #include <TTree.h>
+// #include <TH1F.h>
+// #include <TH1D.h>
+// #include <TH2F.h>
+// #include <TCanvas.h>
+// #include <TPad.h>
+// #include <TAxis.h>
+// #include <TStyle.h>
+// #include <TPaveStats.h>
+// #include <TLatex.h>
+// #include <TColor.h>
 
-#include <TStopwatch.h>
-#include <memory>
-#include <iostream>
-#include <iomanip>
-#include <vector>
-#include <string>
-#include <sstream>
-#include "DataFormatsFV0/Digit.h"
-#include "DataFormatsFV0/ChannelData.h"
-#include "SimulationDataFormat/MCTruthContainer.h"
-#include "SimulationDataFormat/MCCompLabel.h"
-#include "FV0Base/Constants.h"
-#include "DataFormatsFV0/MCLabel.h"
-#include <fairlogger/Logger.h>
+// #include <TStopwatch.h>
+// #include <memory>
+// #include <iostream>
+// #include <iomanip>
+// #include <vector>
+// #include <string>
+// #include <sstream>
+// #include "DataFormatsFIT/Triggers.h"
+// #include "DataFormatsFV0/Digit.h"
+// #include "DataFormatsFV0/ChannelData.h"
+// #include "SimulationDataFormat/MCTruthContainer.h"
+// #include "SimulationDataFormat/MCCompLabel.h"
+// #include "FV0Base/Constants.h"
+// #include "DataFormatsFV0/MCLabel.h"
+// #include <fairlogger/Logger.h>
 
 void AdjustStatBox(TH1* h, float x1ndc, float x2ndc, float y1ndc, float y2ndc)
 {
@@ -460,4 +461,4 @@ int compareFV0Digits(std::string digiFName1 = "fv0digi-rawhistos.root", std::str
   return 0;
 }
 
-#endif
+// #endif

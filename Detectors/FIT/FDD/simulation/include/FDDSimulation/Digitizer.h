@@ -28,6 +28,7 @@
 #include <array>
 #include <deque>
 #include <bitset>
+#include "FDDSimulation/FDDDigParam.h"
 
 namespace o2
 {

@@ -162,7 +162,11 @@ void Digitizer::createPulse(float mipFraction, int parID, const double hitTime, 
     }
   }
 
+<<<<<<< Updated upstream
   // Subtract time-of-flight from hit time
+=======
+  // Time-of-flight subtracted from hit time
+>>>>>>> Stashed changes
   const float timeOfFlight = hitR / o2::constants::physics::LightSpeedCm2NS;
   Int_t const NBinShift = std::lround((hitTime - timeOfFlight + FV0DigParam::Instance().hitTimeOffset) / FV0DigParam::Instance().waveformBinWidth);
 

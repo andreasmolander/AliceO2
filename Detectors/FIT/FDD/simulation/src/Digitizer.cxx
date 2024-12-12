@@ -11,8 +11,13 @@
 
 #include "FDDSimulation/Digitizer.h"
 
+<<<<<<< Updated upstream
 #include "CommonDataFormat/InteractionRecord.h"
 #include "FDDSimulation/FDDDigParam.h"
+=======
+#include "FDDSimulation/FDDDigParam.h"
+#include "CommonDataFormat/InteractionRecord.h"
+>>>>>>> Stashed changes
 #include "SimulationDataFormat/MCTruthContainer.h"
 
 #include "TMath.h"
@@ -74,10 +79,18 @@ void Digitizer::process(const std::vector<o2::fdd::Hit>& hits,
     double delayScintillator = mRndScintDelay.getNextValue();
     double timeHit = delayScintillator + hit.GetTime();
 
+<<<<<<< Updated upstream
     // Subtract time-of-flight from hit time
     const float timeOfFlight = hit.GetPos().R() / o2::constants::physics::LightSpeedCm2NS;
     const float timeOffset = iChannel < 8 ? FDDDigParam::Instance().hitTimeOffsetC : FDDDigParam::Instance().hitTimeOffsetA;
 
+=======
+    // Time-of-flight subtracted from hit time
+    // timeHit -= getTOFCorrection(int(iChannel / 4));
+    const float timeOfFlight = hit.GetPos().R() / o2::constants::physics::LightSpeedCm2NS;
+    const float timeOffset = 0; // TODO: why instance not working?
+    // const float timeOffset = hit.GetDetectorID() > 7 ? FDDDigParam::Instance().hitTimeOffsetA : FDDDigParam::Instance().hitTimeOffsetC; // TODO double check ch IDs
+>>>>>>> Stashed changes
     timeHit += -timeOfFlight + timeOffset;
     timeHit += mIntRecord.getTimeNS();
     o2::InteractionRecord irHit(timeHit); // BC in which the hit appears (might be different from interaction BC for slow particles)
