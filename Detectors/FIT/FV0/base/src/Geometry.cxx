@@ -13,7 +13,7 @@
 /// \brief  Implementation of FV0 geometry.
 ///
 /// \author Maciej Slupecki, University of Jyvaskyla, Finland
-/// \author Andreas Molander, University of Helsinki, Finland
+/// \author Andreas Molander (andreas.molander@cern.ch)
 
 #include "FV0Base/Geometry.h"
 
@@ -94,6 +94,9 @@ bool Geometry::enableComponent(const EGeoComponent component, const bool enable)
 
 void Geometry::buildGeometry() const
 {
+  if (!gGeoManager) {
+    LOG(fatal) << "FV0: No TGeoManager found!";
+  }
   TGeoVolume* vALIC = gGeoManager->GetVolume("barrel");
   if (!vALIC) {
     LOG(fatal) << "FV0: Could not find the top volume";
@@ -370,6 +373,7 @@ void Geometry::initializeNonSensVols()
   initializeScrewHoles();
   initializeRodHoles();
   initializePlasticCells();
+  initializePhotonFilter();
   initializePmts();
   initializeFibers();
   initializeScrews();
@@ -410,6 +414,118 @@ void Geometry::initializeRodHoles()
 
   new TGeoCompositeShape(sRodHolesCSName.c_str(), boolFormula.c_str());
 }
+
+void Geometry::createCellShapeExpression(const std::string& cellType, const int ring, const float zThickness)
+{
+  const float dxHoleCut = sDxHoleExtensionScintillator; // width of extension of hole 1, 2 and 7 in the "a" cell
+  const float xHole = sDrSeparationScint + dxHoleCut;   // x-placement of holes 1, 2 and 7 in the "a" cell
+
+  // Sector separation gap shape
+  const std::string secSepShapeName = sDetectorName + cellType + "SectorSeparation";
+  if (!gGeoManager->GetListOfShapes()->Contains((secSepShapeName.c_str()))) {
+    new TGeoBBox(secSepShapeName.c_str(), mRMaxScintillator.back() + sEpsilon, sDrSeparationScint, zThickness / 2);
+  }
+
+  // Sector separation gap rotations
+  const std::string secSepRot45Name = sDetectorName + cellType + "SecSepRot45";
+  const std::string secSepRot90Name = sDetectorName + cellType + "SecSepRot90";
+
+  if (!gGeoManager->GetListOfMatrices()->Contains((secSepRot45Name.c_str()))) {
+    createAndRegisterRot(secSepRot45Name, 45, 0, 0);
+  }
+
+  if (!gGeoManager->GetListOfMatrices()->Contains((secSepRot90Name.c_str()))) {
+    createAndRegisterRot(secSepRot90Name, 90, 0, 0);
+  }
+
+  // Hole shapes
+  const std::string holeSmallName = sDetectorName + cellType + "HoleSmall";
+  const std::string holeLargeName = sDetectorName + cellType + "HoleLarge";
+  const std::string holeSmallCutName = sDetectorName + cellType + "HoleSmallCut";
+  const std::string holeLargeCutName = sDetectorName + cellType + "HoleLargeCut";
+
+  if (!gGeoManager->GetListOfShapes()->Contains((holeSmallName.c_str()))) {
+    new TGeoTube(holeSmallName.c_str(), 0, sDrHoleSmallScintillator, zThickness / 2);
+  }
+
+  if (!gGeoManager->GetListOfShapes()->Contains((holeLargeName.c_str()))) {
+    new TGeoTube(holeLargeName.c_str(), 0, sDrHoleLargeScintillator, zThickness / 2);
+  }
+
+  if (!gGeoManager->GetListOfShapes()->Contains((holeSmallCutName.c_str()))) {
+    new TGeoBBox(holeSmallCutName.c_str(), dxHoleCut, sDrHoleSmallScintillator, zThickness / 2);
+  }
+
+  if (!gGeoManager->GetListOfShapes()->Contains((holeLargeCutName.c_str()))) {
+    new TGeoBBox(holeLargeCutName.c_str(), dxHoleCut, sDrHoleLargeScintillator, zThickness / 2);
+  }
+
+  const float rMin = mRAvgRing[ring];
+  const float rMax = mRAvgRing[ring + 1];
+  const float rMid = rMin + (rMax - rMin) / 2;
+
+  if (cellType == "a") {
+    // "a"-type cell
+    //
+    // Initial placement:
+    //
+    // y
+    // ^
+    // |  1******
+    // |  ************5
+    // |  7*****************
+    // |  *********************3
+    // |  *******************
+    // |  2**************8
+    // |      6********
+    // |        **4
+    // |
+    // |
+    // |  O
+    // ------------------------> x
+    //
+    // * = cell volume
+    // numbers = hole numbers (as numbered in the code below)
+    // O = beam pipe
+
+    const std::string aCellName = createVolumeName(cellType + sCellName + "a", ring);
+
+    // Base shape
+    const std::string aCellShapeName = aCellName + "Shape";
+
+    // The cells in the innermost ring have a slightly shifted inner radius origin.
+    if (ring == 0) {
+      // The innermost "a"-type cell
+      const std::string a1CellShapeFullName = aCellShapeName + "Full";
+      const std::string a1CellShapeHoleCutName = aCellShapeName + "HoleCut";
+      const std::string a1CellShapeHoleCutTransName = a1CellShapeHoleCutName + "Trans";
+
+      if (!gGeoManager->GetListOfShapes()->Contains((a1CellShapeFullName.c_str()))) {
+        new TGeoTubeSeg(a1CellShapeFullName.c_str(), 0, mRMaxScintillator[ring], zThickness / 2 - sEpsilon, 45, 90);
+      }
+
+      if (!gGeoManager->GetListOfShapes()->Contains((a1CellShapeHoleCutName.c_str()))) {
+        new TGeoTube(a1CellShapeHoleCutName.c_str(), 0, mRMinScintillator[ring], zThickness);
+      }
+
+      if (!gGeoManager->GetListOfMatrices()->Contains((a1CellShapeHoleCutTransName.c_str()))) {
+        createAndRegisterTrans(a1CellShapeHoleCutTransName, sXShiftInnerRadiusScintillator, 0, 0);
+      }
+
+      const std::string a1BoolFormula = a1CellShapeFullName + "-" + a1CellShapeHoleCutName + ":" + a1CellShapeHoleCutTransName;
+
+      if (!gGeoManager->GetListOfShapes()->Contains((aCellShapeName.c_str()))) {
+        new TGeoCompositeShape(aCellShapeName.c_str(), a1BoolFormula.c_str());
+      }
+    } else {
+      // The rest of the "a"-type cells
+      if (!gGeoManager->GetListOfShapes()->Contains((aCellShapeName.c_str()))) {
+        new TGeoTubeSeg(aCellShapeName.c_str(), mRMinScintillator[ring], mRMaxScintillator[ring], zThickness / 2, 45, 90);
+      }
+    }
+    
+  }
+} 
 
 void Geometry::initializeCells(const std::string& cellType, const float zThickness, const TGeoMedium* medium,
                                const bool isSensitive)
@@ -699,7 +815,7 @@ void Geometry::initializeCells(const std::string& cellType, const float zThickne
       mSensitiveVolumeNames.push_back(aCell->GetName());
       mSensitiveVolumeNames.push_back(bCell->GetName());
     }
-  }
+  } // for each ring
 }
 
 void Geometry::initializeScintCells()
@@ -712,6 +828,12 @@ void Geometry::initializePlasticCells()
 {
   const TGeoMedium* medium = gGeoManager->GetMedium("FV0_Plastic$");
   initializeCells(sPlasticName, sDzPlastic, medium, false);
+}
+
+void Geometry::initializePhotonFilter()
+{
+  const TGeoMedium* medium = gGeoManager->GetMedium("FV0_PhotonFilter$");
+  initializeCells(sPhotonFilterName, sDzPhotonFilter, medium, false);
 }
 
 void Geometry::initializePmts()
@@ -1048,6 +1170,9 @@ void Geometry::assembleNonSensVols(TGeoVolume* vFV0Right, TGeoVolume* vFV0Left) 
   if (mEnabledComponents.at(ePlastics)) {
     assemblePlasticSectors(vFV0Right, vFV0Left);
   }
+  if (mEnabledComponents.at(ePhotonFilter)) {
+    assemblePhotonFilters(vFV0Right, vFV0Left);
+  }
   if (mEnabledComponents.at(ePmts)) {
     assemblePmts(vFV0Right, vFV0Left);
   }
@@ -1083,6 +1208,14 @@ void Geometry::assemblePlasticSectors(TGeoVolume* vFV0Right, TGeoVolume* vFV0Lef
 
   vFV0Right->AddNode(sectors, 0, trans);
   vFV0Left->AddNode(sectors, 1, trans);
+}
+
+void Geometry::assemblePhotonFilters(TGeoVolume* vFV0Right, TGeoVolume* vFV0Left) const
+{
+  TGeoVolumeAssembly* sectors = buildSectorAssembly(sPhotonFilterName);
+
+  vFV0Right->AddNode(sectors, 0);
+  vFV0Left->AddNode(sectors, 1);
 }
 
 void Geometry::assemblePmts(TGeoVolume* vFV0Right, TGeoVolume* vFV0Left) const

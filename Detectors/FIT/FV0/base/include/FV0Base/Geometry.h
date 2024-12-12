@@ -67,6 +67,7 @@ class Geometry
   enum EGeoComponent {
     eScintillator,
     ePlastics,
+    ePhotonFilter,
     ePmts,
     eFibers,
     eScrews,
@@ -278,12 +279,15 @@ class Geometry
   // Strings for volume names, etc.
   inline static const std::string sScintillatorName = "SCINT";
   inline static const std::string sPlasticName = "PLAST";
+  inline static const std::string sPhotonFilterName = "PHOTONFILTER";
   inline static const std::string sSectorName = "SECTOR";
   inline static const std::string sCellName = "CELL";
   inline static const std::string sScintillatorSectorName = sScintillatorName + sSectorName;
   inline static const std::string sScintillatorCellName = sScintillatorName + sCellName;
   inline static const std::string sPlasticSectorName = sPlasticName + sSectorName;
   inline static const std::string sPlasticCellName = sPlasticName + sCellName;
+  inline static const std::string sPhotonFilterSectorName = sPhotonFilterName + sSectorName;
+  inline static const std::string sPhotonFilterCellName = sPhotonFilterName + sCellName;
   inline static const std::string sPmtName = "PMT";
   inline static const std::string sFiberName = "FIBER";
   inline static const std::string sScrewName = "SCREW";
@@ -353,7 +357,14 @@ class Geometry
   /// from all volumes that the rods are passing through to avoid overlaps.
   void initializeRodHoles();
 
+  /// Create cell shape expressions to be used in TGeoCompositeShape.
+  /// This will also create and register the needed volumes and transformation used in the TGeoCompositeShape.
+  /// \param  cellType    The type of the cells.
+  /// \param  zThickness  The thickness of the cells.
+  std::string createCellShapeExpressions(const std::string& cellType, const int ring, const float zThickness);
+
   /// Initialize cell volumes with a specified thickness and medium.
+  /// The celltype ('a' or 'b') can be understood fromt the CAD drawings of the detector
   /// \param  cellType    The type of the cells.
   /// \param  zThicknes   The thickness of the cells.
   /// \param  medium      The medium of the cells.
@@ -365,6 +376,9 @@ class Geometry
 
   /// Initialize plastic cell volumes for optical fiber support.
   void initializePlasticCells();
+
+  /// Initialize the photon filter between the cells. (I.e. the paint + tape.)
+  void initializePhotonFilter();
 
   /// Initialize PMTs.
   void initializePmts();
@@ -400,6 +414,11 @@ class Geometry
   /// \param vFV0Right The right FV0 volume.
   /// \param vFV0Left  The left FV0 volume.
   void assemblePlasticSectors(TGeoVolume* vFV0Right, TGeoVolume* vFV0Left) const;
+
+  /// Assemble the photon filters.
+  /// \param vFV0Right The right FV0 volume.
+  /// \param vFV0Left  The left FV0 volume.
+  void assemblePhotonFilters(TGeoVolume* vFV0RIght, TGeoVolume* vFV0Left) const;
 
   /// Assemble the PMTs.
   /// \param vFV0Right The right FV0 volume.
@@ -522,6 +541,9 @@ class Geometry
   std::vector<std::vector<float>> mRodPos;    ///< xyz-coordinates of all the rods
   std::vector<TGeoMedium*> mMediumScrewTypes; ///< Medium of the screw types
   std::vector<TGeoMedium*> mMediumRodTypes;   ///< Medium of the rod types
+
+  std::vector<std::string> mACellShapeExpressions; ///< Shape expressions for the A cells
+  std::vector<std::string> mBCellShapeExpressions; ///< Shape expressions for the B cells
 
   const int mGeometryType;                          ///< The type of the geometry.
   std::map<EGeoComponent, bool> mEnabledComponents; ///< Map of the enabled state of all geometry components
