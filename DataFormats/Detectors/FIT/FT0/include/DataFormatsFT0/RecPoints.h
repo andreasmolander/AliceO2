@@ -40,38 +40,38 @@ struct ChannelDataFloat {
   static constexpr float DUMMY_QTC_AMPL = -20000;
 
   int ChId = DUMMY_CHANNEL_ID;    ///< Channel ID
-  int ChainQTC = DUMMY_CHAIN_QTC; ///< Channel data bits
-  float CFDTime = DUMMY_CFD_TIME; ///< Channel time (ns), 0 at the LHC clock center
-  float QTCAmpl = DUMMY_QTC_AMPL; ///< Channel charge (ADC channels)
+  int DataBits = DUMMY_CHAIN_QTC; ///< Channel data bits
+  float Time = DUMMY_CFD_TIME; ///< Channel time (ns), 0 at the LHC clock center
+  float Ampl = DUMMY_QTC_AMPL; ///< Channel charge (ADC channels)
 
   ChannelDataFloat() = default;
-  ChannelDataFloat(int iPmt, float time, float charge, int chainQTC)
+  ChannelDataFloat(int chId, float time, float charge, int dataBits)
   {
-    ChId = iPmt;
-    CFDTime = time;
-    QTCAmpl = charge;
-    ChainQTC = chainQTC;
+    ChId = chId;
+    Time = time;
+    Ampl = charge;
+    DataBits = dataBits;
   }
 
-  static void setFlag(fit::ChannelDataBit bitFlag, int& chainQTC)
+  static void setFlag(fit::ChannelDataBit bitFlag, int& dataBits)
   {
-    chainQTC = uint8_t(chainQTC) | 1u << uint8_t(bitFlag);
+    dataBits = uint8_t(dataBits) | 1u << uint8_t(bitFlag);
   }
-  static void clearFlag(fit::ChannelDataBit bitFlag, int& chainQTC)
+  static void clearFlag(fit::ChannelDataBit bitFlag, int& dataBits)
   {
-    chainQTC = uint8_t(chainQTC) & ~(1u << uint8_t(bitFlag));
+    dataBits = uint8_t(dataBits) & ~(1u << uint8_t(bitFlag));
   }
   void setFlag(int flag)
   {
-    ChainQTC = flag;
+    DataBits = flag;
   }
   void setFlag(fit::ChannelDataBit bitFlag, bool value)
   {
-    ChainQTC = uint8_t(ChainQTC) | uint8_t(value) << uint8_t(bitFlag);
+    DataBits = uint8_t(DataBits) | uint8_t(value) << uint8_t(bitFlag);
   }
   [[nodiscard]] bool getFlag(fit::ChannelDataBit bitFlag) const
   {
-    return bool(uint8_t(ChainQTC) & (1u << uint8_t(bitFlag)));
+    return bool(uint8_t(DataBits) & (1u << uint8_t(bitFlag)));
   }
   [[nodiscard]] bool areAllFlagsGood() const
   {
@@ -86,8 +86,8 @@ struct ChannelDataFloat {
 
   void print() const;
   [[nodiscard]] int getChannelId() const { return ChId; }
-  [[nodiscard]] float getTime() const { return CFDTime; }
-  [[nodiscard]] float getAmp() const { return QTCAmpl; }
+  [[nodiscard]] float getTime() const { return Time; }
+  [[nodiscard]] float getAmp() const { return Ampl; }
 
   bool operator==(const ChannelDataFloat&) const = default;
 

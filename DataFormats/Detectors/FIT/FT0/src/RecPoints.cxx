@@ -23,7 +23,7 @@ using namespace o2::ft0;
 
 void ChannelDataFloat::print() const
 {
-  printf("  ChID% d | CFDtime=%f | QTCampl=%f QTC chain %d\n", ChId, CFDTime, QTCAmpl, ChainQTC);
+  printf("  ChID% d | CFDtime=%f | QTCampl=%f QTC chain %d\n", ChId, Time, Ampl, DataBits);
 }
 
 gsl::span<const ChannelDataFloat> RecPoints::getBunchChannelData(const gsl::span<const ChannelDataFloat> tfdata) const
