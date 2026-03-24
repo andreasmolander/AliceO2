@@ -49,5 +49,12 @@ o2_add_test_root_macro(readAlignParam.C
                        PUBLIC_LINK_LIBRARIES O2::CCDB
                        LABELS fit)
 
+o2_add_test_root_macro(readFITLookUpTable.C
+                       PUBLIC_LINK_LIBRARIES O2::CCDB
+                                             O2::DataFormatsFIT
+                                             O2::Framework
+                       LABELS fit)
+
 o2_data_file(COPY readFITDCSdata.C DESTINATION Detectors/FIT/macros/)
 o2_data_file(COPY readFITDeadChannelMap.C DESTINATION Detectors/FIT/macros/)
+o2_data_file(COPY readFITLookUpTable.C DESTINATION Detectors/FIT/macros/)
